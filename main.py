@@ -42,8 +42,19 @@ class App(tk.Tk):
         self.intervalo_var = tk.DoubleVar(value=1.0)
 
         self._build_ui()
+        self.bind_all("<Control-space>", lambda e: self._hotkey_toggle())
         self.after(80, self._poll_log_queue)
         self.protocol("WM_DELETE_WINDOW", self._on_close)
+
+    # ---------- TOGGLE ----------
+    def _hotkey_toggle(self):
+        if self._state == 'stopped':
+            self._start_worker()
+        elif self._state == 'running':
+            self._pause_worker()
+        elif self._state == 'paused':
+            self._resume_worker()
+
 
     # ---------- UI ----------
     def _build_ui(self):
